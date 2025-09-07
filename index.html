@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Domina la IA — Guía Interactiva</title>
+<meta name="description" content="Guía interactiva: fundamentos, ROCASE V2, analizador de prompts, quiz, matrices y enlaces a apps."/>
+<style>
+:root{--bg1:#071a28;--bg2:#0b2636;--text:#e6f7ff;--muted:#9fb3c2;--card:#0f2f45;--border:#1e3b50;--accent:#00cfff}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;background:linear-gradient(to bottom,var(--bg1),var(--bg2));color:var(--text)}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1120px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:10;background:rgba(7,26,40,.6);backdrop-filter:blur(8px);border-bottom:1px solid #153041}
+.header-row{display:flex;gap:12px;align-items:center;padding:12px 0}
+.logo{display:flex;gap:10px;align-items:center}
+.logo-badge{width:32px;height:32px;border-radius:10px;background:var(--accent)}
+.small{font-size:12px;color:#bcd0dc}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(10,31,46,.7);border:1px solid var(--border);border-radius:10px;padding:6px 10px}
+.search input{background:transparent;border:none;color:var(--text);outline:none;min-width:180px}
+.btn{background:#173446;border:1px solid #28556e;color:#d7e8f2;border-radius:10px;padding:8px 12px;font-size:14px;cursor:pointer}
+.btn:hover{background:#1c3d52}
+.tabs{display:flex;gap:8px;overflow:auto;padding:0 0 10px}
+.tab{padding:8px 10px;border:1px solid var(--border);background:rgba(10,31,46,.6);border-radius:10px;white-space:nowrap;cursor:pointer;font-size:14px}
+.tab.active{border-color:#49e0ff;background:rgba(0,207,255,.12)}
+main{padding:24px 0 40px}
+.accordion{border:1px solid var(--border);background:rgba(10,31,46,.6);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px;cursor:pointer}
+.acc-body{padding:0 14px 16px}
+.grid2{display:grid;gap:12px;grid-template-columns:repeat(1,minmax(0,1fr))}
+.grid3{display:grid;gap:12px;grid-template-columns:repeat(1,minmax(0,1fr))}
+@media(min-width:760px){.grid2{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:repeat(3,1fr)}}
+.card{border:1px solid var(--border);background:rgba(15,47,69,.5);border-radius:12px;padding:12px}
+.card.flex-col{display:flex}
+.card h4{margin:0 0 6px 0}
+.note{border:1px solid var(--border);background:rgba(15,47,69,.6);border-radius:12px;padding:10px}
+.semi{font-weight:600}
+.muted{color:#b6c8d3;font-size:14px}
+.pre-sm{white-space:pre-wrap;font-size:13px;background:rgba(7,26,40,.5);border:1px dashed var(--border);padding:10px;border-radius:8px}
+.input,textarea,.input-num{background:#0a1f2e;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:8px 10px;width:100%}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.progress{height:10px;background:#1c3341;border-radius:999px;overflow:hidden}
+.progress > div{height:10px;background:linear-gradient(90deg,var(--accent),#38bdf8)}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:10px;border-top:1px solid var(--border);text-align:left;font-size:14px}
+.range{width:100%}
+.badge{font-size:12px;border:1px solid #2a556d;border-radius:999px;padding:2px 8px;color:#c7dee9}
+.card.green{background:rgba(1,64,40,.35);border-color:#0c5c47}
+.card.amber{background:rgba(97,61,3,.25);border-color:#7a5206}
+.card.red{background:rgba(94,7,22,.25);border-color:#7b1c2b}
+footer{border-top:1px solid #153041;background:rgba(7,26,40,.4);padding:20px 0;margin-top:20px}
+.hr{border-top:1px solid var(--border);margin:18px 0}
+.hidden{display:none}
+.copy-btn{margin-top:8px;background:#173446;border:1px solid #2e5160;padding:8px;border-radius:8px;color:#dff5ff;cursor:pointer}
+.copy-btn:hover{background:#1b4957}
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-row">
+    <div class="logo">
+      <div class="logo-badge" aria-hidden="true"></div>
+      <div>
+        <div class="semi">Domina la IA</div>
+        <div class="small">Desde cero a la acción · Guía interactiva</div>
+      </div>
+    </div>
+    <div class="search" role="search" aria-label="Buscar en la guía">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/></svg>
+      <input id="q" placeholder="Buscar secciones, conceptos o plantillas…" aria-label="Buscar"/>
+      <button class="badge" id="clearBtn">Limpiar</button>
+    </div>
+    <button class="btn" id="printBtn">Imprimir / Guardar PDF</button>
+  </div>
+  <div class="container">
+    <div class="tabs" id="tabs" role="tablist" aria-label="Pestañas"></div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="view"></div>
+</main>
+
+<footer>
+  <div class="container row" style="justify-content:space-between">
+    <div class="small">© <span id="year"></span> — Domina la IA. Material de apoyo para participantes.</div>
+    <a href="#" id="topLink" class="small">Volver arriba</a>
+  </div>
+</footer>
+
+<script>
+/* ========= Datos embebidos (evita archivos externos) ========= */
+window.__DATA__ = {
+  "sections": [
+    {
+      "id":"fundamentos",
+      "title":"Fundamentos prácticos de IA",
+      "html":"<p>La IA son sistemas que aprenden de datos y ejecutan tareas que suelen requerir inteligencia humana. No es magia ni consciencia: es una herramienta para amplificar tu criterio y acelerar trabajo repetible.</p><ul><li><b>Personal:</b> organización, resúmenes, planificación de viajes, aprendizaje.</li><li><b>Profesional:</b> informes, análisis de datos, asistencia en reuniones, optimización de procesos.</li><li><b>Creativo:</b> redacción, imágenes, diseño, edición de video.</li></ul><div class='note'><b>Principio clave:</b> usa la IA para <i>convertir caos en claridad</i> y ahorrar tiempo en tareas repetitivas. Conserva supervisión humana donde haya riesgo legal o decisiones sensibles.</div>"
+    },
+    {
+      "id":"clasificacion",
+      "title":"Clasifica tus tareas: ¿qué delegar a la IA?",
+      "html":"<p>Usa este semáforo + filtro de 4 preguntas para decidir.</p><div class='grid3'><div class='card green'><h4>🟢 Rápida</h4><p>Resultados claros, bajo riesgo, fácil de verificar (resúmenes, borradores simples).</p></div><div class='card amber'><h4>🟡 Requiere contexto</h4><p>Necesita datos internos/tono de marca o pasos encadenados.</p></div><div class='card red'><h4>🔴 No apta en vivo</h4><p>Alta sensibilidad, privacidad o juicio humano crítico.</p></div></div><div class='note'><b>Filtro 4 preguntas:</b> ¿Pasa todas las semanas? ¿Toma &gt;15 min? ¿Puedo revisar en 1 min? ¿Riesgo bajo?<br/>3–4 puntos: Delegable hoy · 2 puntos: Requiere guardarraíles · 0–1: Mantener en humanos.</div>"
+    },
+    {
+      "id":"rocase",
+      "title":"Prompts que funcionan: método ROCASE V2",
+      "html":"<p>ROCASE V2: <b>R</b>ol · <b>O</b>bjetivo · <b>C</b>ontexto · <b>A</b>cción · <b>S</b>alida · <b>E</b>stilo.</p><div class='card'><p class='semi'>Plantilla copiable</p><pre class='pre-sm'>[R] Actúa como &lt;rol experto&gt; para &lt;audiencia&gt;.\n\n[O] Logra &lt;resultado&gt; medido por &lt;criterio de éxito&gt;.\n\n[C] Usa el contenido provisto; no inventes datos; límites/fuentes válidas: &lt;…&gt;.\n\n[A] 1) Pasos con verbos; 2) Si falta info, PREGUNTA primero; 3) Propón 2 mejoras.\n\n[S] Formato exacto (tabla/email/bullets/JSON) con estructura y longitud. Idioma &lt;…&gt;.\n\n[E] Estilo/tono (formal/cercano; con/sin emojis); nivel de detalle.</pre><button class='copy-btn' data-copy='[R] Actúa como &lt;rol experto&gt; para &lt;audiencia&gt;.\n\n[O] Logra &lt;resultado&gt; medido por &lt;criterio de éxito&gt;.\n\n[C] Usa el contenido provisto; no inventes datos; límites/fuentes válidas: &lt;…&gt;.\n\n[A] 1) Pasos con verbos; 2) Si falta info, PREGUNTA primero; 3) Propón 2 mejoras.\n\n[S] Formato exacto (tabla/email/bullets/JSON) con estructura y longitud. Idioma &lt;…&gt;.\n\n[E] Estilo/tono (formal/cercano; con/sin emojis); nivel de detalle.'>Copiar plantilla</button></div>"
+    },
+    {
+      "id":"copilotos",
+      "title":"Elige tu copiloto: ChatGPT, Claude o Gemini",
+      "html":"<p>No hay un “mejor” absoluto: prueba el mismo prompt en 2–3 modelos y evalúa con 0–3.</p><ul><li><b>Precisión</b>: responde a lo pedido sin inventar.</li><li><b>S (formato)</b>: respeta tabla/JSON/bullets/longitud/idioma.</li><li><b>E (estilo)</b>: suena como pediste.</li><li><b>Utilidad</b>: ¿puedes usar la salida tal cual?</li></ul><p class='muted'>Trucos: añade ejemplo de salida si el formato se rompe; usa ejemplo sí/no si el tono importa; si falta info, pide que pregunte primero.</p>"
+    },
+    {
+      "id":"casos",
+      "title":"Casos empresariales: de datos a decisiones",
+      "html":"<p>Pistas comunes: Administrativo, Inventario/Almacén, Cobranzas, Clientes/Ventas, Emprendimiento.</p><div class='grid2'><div class='card'><h4>Misión paso a paso</h4><ol><li>Define ROCASE V2 del caso.</li><li>V1 en tu LLM favorito y evalúa qué faltó/sobró.</li><li>V2 con few-shot (1 sí + 1 no).</li><li>Prueba cruzada (otro LLM o feedback de un par).</li><li>Completa Matriz de Impacto y guarda plantilla.</li></ol></div><div class='card'><h4>Plantilla breve del caso</h4><pre class='pre-sm'>[R] Actúa como &lt;rol&gt; para &lt;área/cliente&gt;.\n\n[O] Entrega &lt;resultado&gt; medido por &lt;criterio&gt;.\n\n[C] Pega datos/tabla/notas; no inventes; límites.\n\n[A] 1) Pasos; 2) Si falta info, PREGUNTA; 3) 2 mejoras.\n\n[S] Formato exacto. Idioma &lt;…&gt;.\n\n[E] Estilo/tono.</pre></div></div>"
+    },
+    {
+      "id":"workspace",
+      "title":"Google Workspace + Gemini: flujos prácticos",
+      "html":"<div class='grid3'><div class='card'><h4>Gmail → Tareas + Borrador</h4><p>Extrae tareas con responsable/fecha y redacta email (120–150 palabras).</p></div><div class='card'><h4>Sheets → Limpieza + Prioridad</h4><p>Elimina duplicados, agrega columna Sugerencia y 2 fórmulas útiles.</p></div><div class='card'><h4>Docs → Resumen semanal</h4><p>Produce 200–250 palabras (Resumen / Riesgos / Próximos pasos).</p></div></div><p class='muted'>Privacidad: usa datos ficticios al practicar; en producción, anonimiza y verifica.</p>"
+    },
+    {
+      "id":"pipeline",
+      "title":"De fuentes a presentaciones: NotebookLM → Gamma → Transcripción",
+      "html":"<ol><li>NotebookLM: crea cuaderno y añade fuentes (Docs/PDF/URLs/YouTube).</li><li>Pide temas, riesgos y próximos pasos; opcional, Audio Overview.</li><li>Convierte el resumen en outline (≤6 secciones) y pásalo a Gamma.</li><li>Transcribe un audio (5–10 min) y agrega citas con timestamp al deck.</li><li>Exporta a PPT/PDF y pasa checklist S/E.</li></ol>"
+    },
+    {
+      "id":"banco",
+      "title":"Banco de prompts (personal, profesional y creativo)",
+      "html":"<p>Usa variables &lt;&gt; y añade ejemplos sí/no cuando el tono importe.</p><div class='grid3'><div class='card flex-col'><p class='semi'>Personal — Rutinas</p><pre class='pre-sm'>[R] Coach de hábitos.\n[O] Rutina AM 30' + PM 20'.\n[C] Sedentario, sin lesiones.\n[A] Lista con tiempos + 2 alternativas si hay poco tiempo.\n[S] Tabla 'Bloque | Min | Actividad | Tip'.\n[E] Cercano, sin emojis.</pre><button class='copy-btn' data-copy=\"[R] Coach de hábitos.\\n[O] Rutina AM 30' + PM 20'.\\n[C] Sedentario, sin lesiones.\\n[A] Lista con tiempos + 2 alternativas si hay poco tiempo.\\n[S] Tabla 'Bloque | Min | Actividad | Tip'.\\n[E] Cercano, sin emojis.\">Copiar</button></div><div class='card flex-col'><p class='semi'>Profesional — Cobranzas</p><pre class='pre-sm'>[R] Analista A/R.\n[O] Segmentar 7/14/30 + guiones y canales.\n[C] CSV {Cliente, Monto, Días}.\n[A] Normaliza → Puntúa riesgo → Secuencia D0/3/7 → Guion 60s.\n[S] 3 tablas + guion.\n[E] Conciso.</pre><button class='copy-btn' data-copy=\"[R] Analista A/R.\\n[O] Segmentar 7/14/30 + guiones y canales.\\n[C] CSV {Cliente, Monto, Días}.\\n[A] Normaliza → Puntúa riesgo → Secuencia D0/3/7 → Guion 60s.\\n[S] 3 tablas + guion.\\n[E] Conciso.\">Copiar</button></div><div class='card flex-col'><p class='semi'>Creativo — Guion 60s</p><pre class='pre-sm'>[R] Guionista UGC.\n[O] Script 60s con H-P-S-CTA.\n[C] Público +30 años, principiantes IA.\n[A] Hook (≤3s) → Problema → Solución → CTA.\n[S] 4 bloques con crono.\n[E] Natural.</pre><button class='copy-btn' data-copy=\"[R] Guionista UGC.\\n[O] Script 60s con H-P-S-CTA.\\n[C] Público +30 años, principiantes IA.\\n[A] Hook (≤3s) → Problema → Solución → CTA.\\n[S] 4 bloques con crono.\\n[E] Natural.\">Copiar</button></div></div>"
+    },
+    {
+      "id":"plan14",
+      "title":"Plan de 14 días (20–30 min/día)",
+      "html":"<div class='grid2'><div class='card'><h4>Semana 1 — fundamentos + prompts</h4><ul><li>Día 1: Semáforo + Filtro 4 preguntas.</li><li>Día 2: 2 prompts ROCASE V2.</li><li>Día 3: Evalúa Precisión/S/E/Utilidad en 2 LLMs.</li><li>Día 4: Añade few-shot (1 sí + 1 no).</li><li>Día 5: Librería de Prompts (tags).</li><li>Día 6: Flujos Gmail/Sheets/Docs.</li><li>Día 7: Descanso activo.</li></ul></div><div class='card'><h4>Semana 2 — datos + presentaciones</h4><ul><li>Día 8: Cobranzas o Inventario (CSV).</li><li>Día 9: Matriz de Impacto (ahorro/riesgo).</li><li>Día 10: NotebookLM (síntesis + pasos).</li><li>Día 11: Gamma (deck 10–12 slides).</li><li>Día 12: Transcripción (citas con timestamp).</li><li>Día 13: Exporta PDF/PPT y checklist.</li><li>Día 14: Retrospectiva.</li></ul></div></div>"
+    },
+    {
+      "id":"glosario",
+      "title":"Glosario esencial",
+      "html":"<div class='grid2'><div class='card'><p class='semi'>IA generativa</p><p>Genera contenido nuevo (texto/imágenes/audio/video/código).</p></div><div class='card'><p class='semi'>LLM</p><p>Modelo de lenguaje entrenado con grandes volúmenes de texto (GPT, Claude, Gemini).</p></div><div class='card'><p class='semi'>Prompt</p><p>Instrucción que das a la IA para obtener una respuesta.</p></div><div class='card'><p class='semi'>Alucinación</p><p>Respuesta inventada que suena creíble.</p></div><div class='card'><p class='semi'>Iteración</p><p>Refinar el prompt y volver a consultar para mejorar la salida.</p></div><div class='card'><p class='semi'>Token</p><p>Unidad aproximada de 4 caracteres; 1000 tokens ≈ 750 palabras.</p></div><div class='card'><p class='semi'>API</p><p>Interfaz para conectar tu software con el modelo de IA.</p></div><div class='card'><p class='semi'>Sesgo</p><p>Tendencia a error por datos de entrenamiento.</p></div></div>"
+    }
+  ],
+  "quiz": [
+    {"q":"¿Qué describe mejor a la IA en este taller?","opts":["Magia que resuelve todo","Herramienta que amplifica criterio y acelera tareas","Sistema consciente","Solo sirve para programadores"],"c":1,"e":"La IA aquí se usa para convertir caos en claridad y ahorrar tiempo, bajo supervisión humana."},
+    {"q":"En ROCASE V2, la 'S' se refiere a…","opts":["Síntesis","Salida (formato)","Señal","Sesgo"],"c":1,"e":"S = Salida: formato/estructura/longitud/idioma exactos."},
+    {"q":"¿Cuándo es 'No apta en vivo'?","opts":["Tarea de bajo riesgo","Alta sensibilidad/privacidad o juicio crítico","Resumen de texto público","Limpieza de duplicados en hoja"],"c":1,"e":"Alta sensibilidad o juicio crítico requieren revisión humana principal."},
+    {"q":"Una técnica para estabilizar el 'E' (estilo) es…","opts":["No declarar tono","Añadir ejemplo SÍ/NO","Pedir más tokens","Eliminar el contexto"],"c":1,"e":"El few-shot con ejemplo SÍ/NO ayuda a fijar el tono deseado."},
+    {"q":"En la comparativa de LLMs, 'Utilidad' significa…","opts":["Si respeta el JSON","Si suena cercano","Si puedes usar la salida casi sin retoques","Si es el más popular"],"c":2,"e":"Utilidad = cuán lista para usar llega la respuesta."},
+    {"q":"En flujos Workspace, el 'Resumen en Docs' suele tener…","opts":["500–700 palabras","200–250 palabras en 3 secciones","Un solo párrafo sin estructura","Más de 1.000 palabras"],"c":1,"e":"Estructura: Resumen / Riesgos / Próximos pasos (200–250 palabras)."},
+    {"q":"En 'Cobranzas', una salida típica incluye…","opts":["Lista de emojis","3 tablas + guion de llamada 60s","Un poema","Historias de Instagram"],"c":1,"e":"Tablas de segmentación/secuencia y guion breve."},
+    {"q":"El filtro de 4 preguntas sirve para…","opts":["Saber si automatizamos o hacemos manual","Elegir tipografía","Medir ancho de banda","Descubrir precios de vuelos"],"c":0,"e":"Ayuda a decidir qué tareas delegar a IA y con qué guardarraíles."},
+    {"q":"¿Qué añade NotebookLM en el pipeline hacia Gamma?","opts":["Memes","Síntesis de fuentes y próximos pasos","Filtros de Instagram","Compilación de código"],"c":1,"e":"NotebookLM condensa material crudo en insights/acciones."},
+    {"q":"Para revisar privacidad al practicar…","opts":["Pega datos de clientes reales","Usa datos ficticios/anonimizados","Publica todo en redes","Envía contratos sin revisar"],"c":1,"e":"Practica con datos sintéticos y revisa antes de enviar nada sensible."}
+  ],
+  "apps":[
+    {"name":"ChatGPT","url":"https://chat.openai.com/","desc":"Modelo conversacional para redacción, análisis y prototipos de prompts."},
+    {"name":"Claude.ai","url":"https://claude.ai/","desc":"Asistente de Anthropic. Fuerte en comprensión y redacción larga."},
+    {"name":"Google Gemini","url":"https://gemini.google.com/","desc":"Copiloto integrado con Workspace y funciones multimodales."},
+    {"name":"NotebookLM","url":"https://notebooklm.google.com/","desc":"Crea cuadernos con fuentes y genera resúmenes/insights."},
+    {"name":"Gamma.app","url":"https://gamma.app/","desc":"Presentaciones a partir de outline o texto, con diseño automático."},
+    {"name":"Google Docs","url":"https://docs.google.com/","desc":"Redacción y resúmenes ejecutivos con soporte de IA."},
+    {"name":"Google Sheets","url":"https://sheets.google.com/","desc":"Análisis ligero, limpieza y priorización con ayuda de IA."},
+    {"name":"Gmail","url":"https://mail.google.com/","desc":"Borradores y extracción de tareas desde correos."}
+  ]
+};
+
+/* ========= Lógica del sitio (sin dependencias externas) ========= */
+(function(){
+  const DATA = window.__DATA__;
+  const TABS = ["Explora","Analizador","Quiz","Matrices y Plantillas","Apps"];
+  let state = { tab: "Explora", query: "", promptText: "" };
+
+  // util
+  const $ = (sel, el=document)=>el.querySelector(sel);
+  const $$ = (sel, el=document)=>Array.from(el.querySelectorAll(sel));
+  function esc(s){ return String(s).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+  function copy(text){ if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>alert("Copiado")).catch(()=>alert("No se pudo copiar")); else alert("No disponible"); }
+
+  // render tabs
+  function renderTabs(){
+    const el = $("#tabs");
+    el.innerHTML = TABS.map(t=>`<button class="tab ${state.tab===t?'active':''}" data-tab="${t}">${t}</button>`).join("");
+  }
+
+  // render explore (accordion)
+  function renderExplora(){
+    const q = state.query.trim().toLowerCase();
+    const secs = DATA.sections.filter(s=> !q || JSON.stringify(s).toLowerCase().includes(q));
+    return secs.map(s=>`
+      <div class="accordion">
+        <div class="acc-head" data-acc="${s.id}"><span class="semi">${esc(s.title)}</span><span aria-hidden="true">▾</span></div>
+        <div class="acc-body hidden" id="acc-${s.id}">${s.html}</div>
+      </div>
+    `).join("");
+  }
+
+  function analyzePrompt(text){
+    text = (text||"").trim();
+    const has = r => r.test(text);
+    const hasR = has(/\n?\[R\]|\bRol\b/i);
+    const hasO = has(/\n?\[O\]|\bObjetivo\b/i);
+    const hasC = has(/\n?\[C\]|\bContexto\b/i);
+    const hasA = has(/\n?\[A\]|\bAcción\b|Accion/i);
+    const hasS = has(/\n?\[S\]|\bSalida\b|Formato/i);
+    const hasE = has(/\n?\[E\]|\bEstilo\b/i);
+    const mentionsAskFirst = /pregunta primero|pregunte primero/i.test(text);
+    const mentionsNoInvent = /no inventes/i.test(text);
+    const mentionsFormat = /tabla|json|bullets|viñetas|email|formato/i.test(text);
+    let score = 0;
+    [hasR,hasO,hasC,hasA,hasS,hasE].forEach(b=>{ if(b) score+=10; });
+    if(mentionsAskFirst) score+=10;
+    if(mentionsNoInvent) score+=10;
+    if(mentionsFormat) score+=10;
+    const words = text.split(/\s+/).filter(Boolean).length;
+    const lengthOK = words>=80 && words<=220; if(lengthOK) score+=10;
+    const issues = [];
+    if(!hasR) issues.push("Falta [R] Rol (quién habla y para quién).");
+    if(!hasO) issues.push("Falta [O] Objetivo con criterio de éxito.");
+    if(!hasC) issues.push("Falta [C] Contexto, límites y fuentes válidas.");
+    if(!hasA) issues.push("Falta [A] Acción en pasos y que pregunte si falta info.");
+    if(!hasS) issues.push("Falta [S] Salida: formato/estructura/longitud/idioma.");
+    if(!hasE) issues.push("Falta [E] Estilo/tono y nivel de detalle.");
+    if(!mentionsAskFirst) issues.push("Añade 'Si falta info, PREGUNTA primero'.");
+    if(!mentionsNoInvent) issues.push("Incluye 'No inventes datos' o límites claros.");
+    if(!mentionsFormat) issues.push("Especifica el formato: tabla/JSON/bullets/email y longitud.");
+    if(!lengthOK) issues.push("Ajusta la longitud (ideal 80–220 palabras aprox.).");
+    const smartWrap = `# Prompt (ROCASE V2)\n\n[R] Actúa como <rol experto> para <audiencia>.\n\n[O] Logra <resultado> medido por <criterio de éxito>.\n\n[C] Usa el contenido provisto a continuación; no inventes datos. Límites y fuentes válidas: <…>.\n\n[A] 1) Describe los pasos concretos; 2) Si falta información, PREGUNTA primero; 3) Propón 2 mejoras al final.\n\n[S] Entrega en <tabla/email/bullets/JSON>, con estructura y longitud definidas. Idioma: <…>.\n\n[E] Estilo/tono: <profesional/cercano; con/sin emojis>. Nivel de detalle: <alto/medio/bajo>.\n\n# Contenido\n${text}`;
+    return { score, issues, smartWrap, suggestions: ["Declara audiencia y criterio de éxito medible.","Incluye un ejemplo SÍ/NO si el tono es importante.","Mantén variables <…> para reutilizar tu plantilla."] };
+  }
+
+  function renderAnalizador(){
+    const a = analyzePrompt(state.promptText);
+    return `
+      <div class="grid2">
+        <div class="card">
+          <p class="semi">Pega tu prompt (ROCASE V2 recomendado)</p>
+          <textarea id="prompt" rows="12" placeholder="Pega aquí tu prompt…">${esc(state.promptText)}</textarea>
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="copyWrap">Copiar análisis envuelto</button>
+            <button class="btn" id="autoCurar">Autocurar con plantilla</button>
+          </div>
+        </div>
+        <div class="card">
+          <p class="semi">Resultados</p>
+          <div class="small">Puntaje ROCASE V2</div>
+          <div class="progress" style="margin:6px 0 4px"><div style="width:${a.score}%"></div></div>
+          <div class="small">${a.score} / 100</div>
+          <div class="hr"></div>
+          <p class="semi">Mejoras sugeridas</p>
+          ${a.issues.length?`<ul>${a.issues.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<div class="small" style="color:#9FE6B8">¡Excelente! Tu prompt cubre los elementos esenciales.</div>`}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderQuiz(){
+    return `
+      <div id="quiz">
+        ${DATA.quiz.map((it,i)=>`
+          <div class="card" data-i="${i}">
+            <p class="semi">${i+1}. ${esc(it.q)}</p>
+            ${it.opts.map((opt,j)=>`
+              <label class="row" style="border:1px solid var(--border);border-radius:10px;padding:8px">
+                <input type="radio" name="q${i}" value="${j}"/>
+                <span>${esc(opt)}</span>
+              </label>
+            `).join("")}
+            <div class="small muted hidden" id="exp-${i}"><b>Explicación:</b> ${esc(it.e)}</div>
+          </div>
+        `).join("")}
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="calificar">Calificar</button>
+          <div class="small" id="score"></div>
+          <button class="btn" id="reiniciar">Reiniciar</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMatrices(){
+    return `
+      <div class="card">
+        <p class="semi">Matriz comparativa de LLMs (0–3)</p>
+        <div style="overflow:auto">
+          <table class="table" id="llmTable">
+            <thead><tr><th>Modelo</th><th>Precisión</th><th>S (formato)</th><th>E (estilo)</th><th>Utilidad</th><th>Total</th></tr></thead>
+            <tbody>
+              ${["ChatGPT","Claude","Gemini"].map(m=>`
+                <tr data-model="${m}">
+                  <td class="semi">${m}</td>
+                  ${["Precisión","S (formato)","E (estilo)","Utilidad"].map(c=>`<td><select class="input-num" data-crit="${c}">${[0,1,2,3].map(v=>`<option>${v}</option>`).join("")}</select></td>`).join("")}
+                  <td class="semi" data-total>0</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="small" id="llmBest" style="margin-top:8px">Recomendación actual: —</div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <p class="semi">Matriz de Impacto</p>
+        <div style="overflow:auto">
+          <table class="table" id="impact">
+            <thead><tr><th>Caso</th><th>Min manual</th><th>Min con IA</th><th>Ahorro</th><th>Calidad S/E (1–5)</th><th>Riesgos/Notas</th></tr></thead>
+            <tbody id="impactBody">
+              ${renderImpactRow("Resumen semanal",30,10,4,"Revisar tono")}
+            </tbody>
+          </table>
+        </div>
+        <button class="btn" id="addRow" style="margin-top:8px">Añadir fila</button>
+      </div>
+
+      <div class="grid2" style="margin-top:16px">
+        <div class="card">
+          <p class="semi">Plantilla — Resumen ejecutivo (200–250 palabras)</p>
+          <pre class="pre-sm">**Resumen (80–100):**\n\n**Riesgos (60–80):**\n\n**Próximos pasos (60–80):**</pre>
+          <button class="copy-btn" data-copy="**Resumen (80–100):**\n\n**Riesgos (60–80):**\n\n**Próximos pasos (60–80):**">Copiar</button>
+        </div>
+        <div class="card">
+          <p class="semi">Guion de llamada 60 s (Cobranzas)</p>
+          <pre class="pre-sm">Apertura (10 s): saludo + verificación.\nContexto (15 s): saldo y fecha.\nPropuesta (20 s): dos alternativas de pago.\nCierre (15 s): confirmación y email de seguimiento.</pre>
+          <button class="copy-btn" data-copy="Apertura (10 s): saludo + verificación.\nContexto (15 s): saldo y fecha.\nPropuesta (20 s): dos alternativas de pago.\nCierre (15 s): confirmación y email de seguimiento.">Copiar</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderImpactRow(caso,manual,conIA,calidad,riesgos){
+    return `<tr>
+      <td><input class="input" value="${esc(caso)}"/></td>
+      <td><input class="input-num" type="number" value="${manual}"/></td>
+      <td><input class="input-num" type="number" value="${conIA}"/></td>
+      <td data-ahorro class="semi">0</td>
+      <td><input class="range" type="range" min="1" max="5" step="1" value="${calidad}"/></td>
+      <td><input class="input" value="${esc(riesgos)}"/></td>
+    </tr>`;
+  }
+
+  function renderApps(){
+    return `<div class="grid3">` + DATA.apps.map(a=>`
+      <a class="card" href="${esc(a.url)}" target="_blank" rel="noreferrer">
+        <div class="row" style="justify-content:space-between">
+          <h4 class="semi">${esc(a.name)}</h4><span class="badge">Abrir</span>
+        </div>
+        <p class="small" style="margin-top:6px">${esc(a.desc)}</p>
+        <p class="small muted">${esc(a.url)}</p>
+      </a>
+    `).join("") + `</div>`;
+  }
+
+  // main render
+  function render(){
+    renderTabs();
+    const view = document.getElementById("view");
+    if(state.tab==="Explora") { view.innerHTML = renderExplora(); bindExplora(); }
+    else if(state.tab==="Analizador"){ view.innerHTML = renderAnalizador(); bindAnalizador(); }
+    else if(state.tab==="Quiz"){ view.innerHTML = renderQuiz(); bindQuiz(); }
+    else if(state.tab==="Matrices y Plantillas"){ view.innerHTML = renderMatrices(); bindMatrices(); }
+    else if(state.tab==="Apps"){ view.innerHTML = renderApps(); bindCopyButtons(); }
+  }
+
+  function bindExplora(){
+    $$("#view .acc-head").forEach(h=>{
+      h.addEventListener("click",()=>{
+        const id = h.getAttribute("data-acc");
+        const body = document.getElementById("acc-"+id);
+        body.classList.toggle("hidden");
+      });
+    });
+    bindCopyButtons();
+  }
+
+  function bindCopyButtons(){
+    $$("#view .copy-btn").forEach(b=> b.addEventListener("click",()=> copy(b.getAttribute("data-copy"))));
+    $$("#view .copy-btn[data-copy]").forEach(b=> b.addEventListener("keydown",(e)=>{ if(e.key==='Enter') copy(b.getAttribute("data-copy")); }));
+  }
+
+  function bindAnalizador(){
+    const ta = $("#prompt");
+    ta && ta.addEventListener("input",(e)=>{ state.promptText = e.target.value; render(); });
+    $("#copyWrap") && $("#copyWrap").addEventListener("click",()=> copy(analyzePrompt(state.promptText).smartWrap));
+    $("#autoCurar") && $("#autoCurar").addEventListener("click",()=>{ state.promptText = analyzePrompt(state.promptText).smartWrap; render(); });
+  }
+
+  function bindQuiz(){
+    $("#calificar").addEventListener("click",()=>{
+      let score = 0;
+      DATA.quiz.forEach((it,i)=>{
+        const sel = $(`input[name="q${i}"]:checked`);
+        const chosen = sel ? Number(sel.value) : -1;
+        const ok = chosen === it.c;
+        if(ok) score++;
+        const exp = $(`#exp-${i}`);
+        exp && exp.classList.remove("hidden");
+        const cards = $$(`#quiz [data-i="${i}"] label`);
+        cards.forEach((lab,idx)=>{
+          lab.style.borderColor = idx===it.c ? "#34d399" : (idx===chosen ? "#ef4444" : "var(--border)");
+          lab.style.background = idx===it.c ? "rgba(16,185,129,.15)" : (idx===chosen ? "rgba(239,68,68,.15)" : "transparent");
+        });
+      });
+      $("#score").textContent = `Puntaje: ${score} / ${DATA.quiz.length}`;
+    });
+    $("#reiniciar").addEventListener("click",()=> render());
+  }
+
+  function bindMatrices(){
+    // copy buttons
+    bindCopyButtons();
+    function recalc(){
+      let best = {m:"—",v:-1};
+      $$("#llmTable tbody tr").forEach(tr=>{
+        let total = 0;
+        $$("select", tr).forEach(s=> total += Number(s.value||0));
+        tr.querySelector("[data-total]").textContent = total;
+        const name = tr.getAttribute("data-model");
+        if(total > best.v) best = {m:name, v:total};
+      });
+      $("#llmBest").textContent = "Recomendación actual: " + best.m;
+    }
+    $$("#llmTable select").forEach(s=> s.addEventListener("change", recalc));
+    recalc();
+
+    // impact
+    function recalcImpact(){
+      $$("#impactBody tr").forEach(tr=>{
+        const manual = Number($$("input[type=number]", tr)[0].value||0);
+        const conIA = Number($$("input[type=number]", tr)[1].value||0);
+        tr.querySelector("[data-ahorro]").textContent = Math.max(0, manual - conIA);
+      });
+    }
+    $("#addRow").addEventListener("click",()=>{ $("#impactBody").insertAdjacentHTML("beforeend", renderImpactRow("Nuevo caso",20,8,3,"")); recalcImpact(); });
+    $$("#impactBody input").forEach(inp=> inp.addEventListener("input", recalcImpact));
+    recalcImpact();
+  }
+
+  // initial wiring
+  document.getElementById("year").textContent = new Date().getFullYear();
+  $("#topLink").addEventListener("click",(e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:"smooth"}); });
+  $("#printBtn").addEventListener("click", ()=> window.print());
+  $("#tabs").addEventListener("click",(e)=>{ const b = e.target.closest("button.tab"); if(!b) return; state.tab = b.getAttribute("data-tab"); render(); });
+  $("#q").addEventListener("input",(e)=>{ state.query = e.target.value; render(); });
+  $("#clearBtn").addEventListener("click",()=>{ state.query=""; $("#q").value=""; render(); });
+
+  // first render
+  render();
+
+})();
+</script>
+</body>
+</html>
